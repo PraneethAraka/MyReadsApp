@@ -33,7 +33,7 @@ class BooksApp extends React.Component {
               </div>
             </div>
             <div className="open-search">
-              <a onClick={() => this.setState({ showSearchPage: false })}>Add a book</a>
+              <a onClick={() => this.setState({ showSearchPage: true })}>Add a book</a>
             </div>
           </div>
         ): <div> No books </div>}
