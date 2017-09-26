@@ -9,7 +9,6 @@ class BookList extends Component {
     return (
 	<div className="list-books-title">
 	   <h1 className="list-books-title">MyReads</h1>
-        </div>
 	<div className="list-books-content">
           <div className="bookshelf">
 	    <ol>
@@ -81,6 +80,7 @@ class BookList extends Component {
                    </div>
 		</ol>
 	</div>
+   </div>
 </div>
 )
 }
