@@ -2,7 +2,8 @@ import React from 'react'
 import * as BooksAPI from './BooksAPI'
 import BookList from './BookList'
 import './App.css'
-import PropTypes from 'prop-types'
+
+
 
 class BooksApp extends React.Component {
   state = {
@@ -21,6 +22,7 @@ class BooksApp extends React.Component {
   		this.setState({ books })
   })
 }
+
   render() {
     return (
       <div className="app">
@@ -39,16 +41,12 @@ class BooksApp extends React.Component {
                 <input type="text" placeholder="Search by title or author"/>   
               </div>
             </div>
-            <div className="open-search">
-              <a onClick={() => this.setState({ showSearchPage: true })}>Add a book</a>
-            </div>
-		</div>): 
-	<div> No books </div>}
+           
 	<div> 
-	  <BookList books={this.props.books} />
+	  <BookList books={ this.props.books }/>
 	</div>
+</div>
     )
-  }
 }
 
 export default BooksApp
