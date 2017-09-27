@@ -1,32 +1,32 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types'		
+import React from 'react'
+import BookShelf from './BookShelf'
 
-class BookList extends Component {
-  static propTypes = {
-    books: PropTypes.array.isRequired,
-  }	
-  render() {
+function BookList (props) {
+
     return (
     <div className="list-books">
      <div className="list-books-title">
        <h1>My Reads</h1>
      </div>
-     <div className='bookshelf'>
-     	<h2 className="bookshelf-title">Currently Reading</h2>
-     	<div className="bookshelf-books">
-            <ol className="books-grid">
-              
-     		</ol>
-     	</div>
-     </div>
-     <div className='bookshelf'>
-     	<h2 className="bookshelf-title">Want to Read</h2>
-     </div>
-     <div className='bookshelf'>
-     	<h2 className="bookshelf-title">Read</h2>
-     </div>
-    </div>
-    )}
-  }
+     <div className="list-books-content">
+      <BookShelf
+      		books={props.books.filter(book=>book.shelf==='currentlyReading')}
+                    shelf="Currently Reading"
+                />
+                <BookShelf
+                    books={props.books.filter(book=>book.shelf==='wantToRead')}
+                    shelf="Want to Read"
+                />
+                <BookShelf
+                    books={props.books.filter(book=>book.shelf==='read')}
+                    shelf="Read"
+                />
+            </div>
+            <div className="open-search">
+                <Link to="/search">Add a book</Link>
+            </div>
+        </div>
+        )    
+}
 
 export default BookList
