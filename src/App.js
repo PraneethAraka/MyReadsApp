@@ -20,14 +20,10 @@ class BooksApp extends Component {
  render() {
     return (
       <div className="app">
-        <Switch>
-            <Route exact path='my-reads/' render={() => (
               <BookList
                 books={this.state.books}
                 onHandleChange={ this.handleChange }
               />
-            )}/>
-        </Switch>
       </div>
     )
   }
