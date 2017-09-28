@@ -24,6 +24,10 @@ class BooksApp extends Component {
                 books={this.state.books}
                 onHandleChange={ this.handleChange }
               />
+      <SearchPage
+        		books={this.state.books}
+        		onHandleChange={ this.handleChange }
+        	/>
       </div>
     )
   }
