@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import * as BooksAPI from './BooksAPI'
-import escapeRegExp from 'escape-string-regxp'
+import escapeRegExp from 'escape-string-regexp'
 import sortBy from 'sort-by'
 
 class SearchPage extends Component {
@@ -33,7 +33,6 @@ class SearchPage extends Component {
         return (
         <div className="search-books">
             <div className="search-books-bar">
-          {JSON.stringify(this.state)}
               <Link to="/" className="close-search">Close</Link>
               <div className="search-books-input-wrapper">
                 <input type="text" 
