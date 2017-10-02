@@ -22,12 +22,12 @@ class SearchPage extends Component {
         let showingBooks
         if (this.state.query) {
           const match = new RegExp(escapeRegExp(this.state.query), 'i')
-          showingBooks = this.props.books.filter((book) => match.test(book.name))
+          showingBooks = this.props.books.filter((book) => match.test(book.title))
         } else {
           showingBooks = this.props.books
         }
       
-      showingBooks.sort(sortBy('name'))
+      showingBooks.sort(sortBy('title'))
       
         return (
         <div className="search-books">
