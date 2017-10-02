@@ -15,17 +15,18 @@ class SearchPage extends Component {
     }
     updateQuery = (query) => {
         this.setState({
-            query: query
+            query: query.trim()
         })
+    }
 
     render() {
-        let showingBooks
-        if (this.state.query) {
-          const match = new RegExp(escapeRegExp(this.state.query), 'i')
-          showingBooks = this.props.books.filter((book) => match.test(book.title))
-        } else {
-          showingBooks = this.props.books
-        }
+      let showingBooks
+      if (this.state.query) {
+        const match = new RegExp(escapeRegExp(this.state.query), 'i')
+        showingBooks = this.props.books.filter((book) => match.test(book.title))
+      } else {
+        showingBooks = this.props.books
+      }
       
       showingBooks.sort(sortBy('title'))
       
@@ -38,7 +39,8 @@ class SearchPage extends Component {
                 <input type="text" 
                         placeholder="Search by title or author"
                         value={this.state.query}
-                        onChange={(event) => this.updateQuery(event.target.value)}/>
+                        onChange={(event) => this.updateQuery(event.target.value)}
+      			/>
                </div>
               </div>
             <div className="search-books-results">
@@ -50,7 +52,7 @@ class SearchPage extends Component {
                                 <div className="book-cover" style={{ width: 128, height: 188, backgroundImage: `url(${book.imageLinks? book.imageLinks.thumbnail : 'https://www.google.com/search?q=placeholder+images+for+books&tbm=isch&tbo=u&source=univ&sa=X&ved=0ahUKEwjQsNDQ6cjWAhVirlQKHQJcCJIQ7AkIQA&biw=1920&bih=1014#imgrc=p8zCAFjQX_5j4M:'})` }}></div>
                                 <div className="book-shelf-changer">
                                     <select value={book.shelf}
-                                        onChange={(e) => onHandleChange(book,e.target.value)}>
+										onChange={(e) => this.onHandleChange(book,e.target.value)}>
                                         <option value="" disabled>Move to...</option>
                                         <option value="currentlyReading">Currently Reading</option>
                                         <option value="wantToRead">Want to Read</option>
