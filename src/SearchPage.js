@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import * as BooksAPI from './BooksAPI'
+import escapeRegExp from 'escape-string-regxp'
+import sortBy from 'sort-by'
 
 class SearchPage extends Component {
   static propTypes = {
@@ -10,44 +12,27 @@ class SearchPage extends Component {
     }
 	state = {
         query: '',
-        results: []
     }
     updateQuery = (query) => {
         this.setState({
             query: query
         })
-        if (query){
-            BooksAPI.search(query.trim(), 50).then((results) => {
-                if(!results || results.error){
-                    this.setState({results: []})
-                } else {
-                    this.bookShelf(results)
-                    this.setState({results:results}) 
-                }
-            }              
-         )} else {
-                this.setState({results: []})
-            }      
-    }
-    
-    bookShelf = (results) => {
-        for (let result of results){
-            for (let book of this.props.books)
-                if (result.id === book.id) {
-                    result.shelf = book.shelf
-                } else {
-                    result.shelf = 'none'
-                }            
+
+    render() {
+        let showingBooks
+        if (this.state.query) {
+          const match = new RegExp(escapeRegExp(this.state.query), 'i')
+          showingBooks = this.props.books.filter((book) => match.test(book.name))
+        } else {
+          showingBooks = this.props.books
         }
-
-    }
-
-    render(){
-        const { onHandleChange} = this.props
-        const { results } = this.state
+      
+      showingBooks.sort(sortBy('name'))
+      
         return (
         <div className="search-books">
             <div className="search-books-bar">
+          {JSON.stringify(this.state)}
               <Link to="/" className="close-search">Close</Link>
               <div className="search-books-input-wrapper">
                 <input type="text" 
@@ -58,7 +43,7 @@ class SearchPage extends Component {
               </div>
             <div className="search-books-results">
                   <ol className="books-grid">
-                      {results.map((book)=>(
+                      {showingBooks.map((book)=>(
                             <li key={book.id}>
                         <div className="book">
                             <div className="book-top">
