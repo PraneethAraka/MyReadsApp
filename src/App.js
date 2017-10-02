@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Route } from 'react-router-dom'
 import { Switch } from 'react-router'
 import BookList from './BookList'
+import SearchPage from './SearchPage'
 import * as BooksAPI from './BooksAPI'
 import './App.css'
 
