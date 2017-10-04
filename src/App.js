@@ -21,14 +21,20 @@ class BooksApp extends Component {
  render() {
     return (
       <div className="app">
+       <Switch>
+        <Route exact path="/" render={() => (
               <BookList
                 books={this.state.books}
                 onHandleChange={ this.handleChange }
               />
-      <SearchPage
+		)}/>
+		<Route path="/search" render={() => (
+      		<SearchPage
         		books={this.state.books}
         		onHandleChange={ this.handleChange }
         	/>
+		)}/>
+		</Switch>
       </div>
     )
   }
