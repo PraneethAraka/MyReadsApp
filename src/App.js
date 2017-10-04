@@ -18,6 +18,17 @@ class BooksApp extends Component {
     componentDidMount = () => {
       this.getAllBooks()
       }
+    
+     handleChange = (book, shelf) => {
+      BooksAPI.update(book, shelf).then(() => {
+        book.shelf = shelf
+        this.setState(previousState => ({
+          books: previousState.books.filter(b=> b.id !== book.id).concat([book])
+        }))
+      })
+    }
+     
+     
  render() {
     return (
       <div className="app">
