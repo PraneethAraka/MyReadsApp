@@ -2,34 +2,52 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import * as BooksAPI from './BooksAPI'
-import escapeRegExp from 'escape-string-regexp'
-import sortBy from 'sort-by'
+
+
 
 class SearchPage extends Component {
-  static propTypes = {
-        books: PropTypes.array.isRequired,
+        static propTypes = {
+        books: PropTypes.array,
         onHandleChange: PropTypes.func.isRequired
     }
-	state = {
+    
+    state = {
         query: '',
+        results: []
     }
     updateQuery = (query) => {
         this.setState({
-            query: query.trim()
+            query: query
         })
+        if (query){
+            BooksAPI.search(query.trim(), 50).then((results) => {
+                if(!results || results.error){
+                    this.setState({results: []})
+                } else {
+                    this.bookShelf(results)
+                    this.setState({results:results}) 
+                }
+            }              
+         )} else {
+                this.setState({results: []})
+            }      
+    }
+    
+    bookShelf = (results) => {
+        for (let result of results){
+            for (let book of this.props.books)
+                if (result.id === book.id) {
+                    result.shelf = book.shelf
+                } else {
+                    result.shelf = 'none'
+                }            
+        }
+
     }
 
-    render() {
-      let showingBooks
-      if (this.state.query) {
-        const match = new RegExp(escapeRegExp(this.state.query), 'i')
-        showingBooks = this.props.books.filter((book) => match.test(book.title))
-      } else {
-        showingBooks = this.props.books
-      }
-      
-      showingBooks.sort(sortBy('title'))
-      
+    render(){
+        const { onHandleChange} = this.props
+        const { results } = this.state
         return (
         <div className="search-books">
             <div className="search-books-bar">
@@ -38,20 +56,20 @@ class SearchPage extends Component {
                 <input type="text" 
                         placeholder="Search by title or author"
                         value={this.state.query}
-                        onChange={(event) => this.updateQuery(event.target.value)}
-      			/>
-               </div>
+                        onChange={(event) => this.updateQuery(event.target.value)}/>
+
               </div>
+            </div>
             <div className="search-books-results">
                   <ol className="books-grid">
-                      {showingBooks.map((book)=>(
+                      {results.map((book)=>(
                             <li key={book.id}>
                         <div className="book">
                             <div className="book-top">
-                                <div className="book-cover" style={{ width: 128, height: 188, backgroundImage: `url(${book.imageLinks? book.imageLinks.thumbnail : 'https://www.google.com/search?q=placeholder+images+for+books&tbm=isch&tbo=u&source=univ&sa=X&ved=0ahUKEwjQsNDQ6cjWAhVirlQKHQJcCJIQ7AkIQA&biw=1920&bih=1014#imgrc=p8zCAFjQX_5j4M:'})` }}></div>
+                                <div className="book-cover" style={{ width: 128, height: 188, backgroundImage: `url(${book.imageLinks? book.imageLinks.thumbnail : 'http://via.placeholder.com/128x193?text=No%20Cover'})` }}></div>
                                 <div className="book-shelf-changer">
                                     <select value={book.shelf}
-										onChange={(e) => this.onHandleChange(book,e.target.value)}>
+                                        onChange={(e) => onHandleChange(book,e.target.value)}>
                                         <option value="" disabled>Move to...</option>
                                         <option value="currentlyReading">Currently Reading</option>
                                         <option value="wantToRead">Want to Read</option>
@@ -72,12 +90,12 @@ class SearchPage extends Component {
                       
                       </ol>
             </div>
-            <div className="back-arrow">
-                <Link to="/">Home</Link>
+ 			<div className="back-arrow">
+                <Link to="/">Homepage</Link>
             </div>
         </div>
         )
-}
+    }
 }
 
 export default SearchPage
